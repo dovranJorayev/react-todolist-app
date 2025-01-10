@@ -7,3 +7,4 @@ const Container = ({children, className, custom}: {children: React.ReactNode; cl
 }
 
 export default Container
+// NOTE: Why used default imports most of the time?

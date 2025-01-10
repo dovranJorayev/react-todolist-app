@@ -3,7 +3,7 @@ import React from 'react'
 const Layout = ({ children }: { children: React.ReactNode }) => {
     
     React.useLayoutEffect(() => {
-        const locale: string = localStorage.getItem('locale') as string;
+        const locale: string = localStorage.getItem('locale') as string; // NOTE: What does this do?
         if (!localStorage.getItem('locale')) {
             localStorage.setItem('locale', locale)
         } else {

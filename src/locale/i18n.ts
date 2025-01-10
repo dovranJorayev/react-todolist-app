@@ -28,3 +28,5 @@ i18n.use(initReactI18next)
     })
 
 export default i18n
+
+// NOTE: There is no such requirements to include internationalization in the project

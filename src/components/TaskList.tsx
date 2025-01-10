@@ -7,6 +7,7 @@ const ITEMS_PER_PAGE = 10;
 const TaskList: React.FC = () => {
   const { filter, tasks, setFilter } = useTodoStore();
 
+  // NOTE: What is needed duplicated local state of search filters while you building sorting/fitlering logic with global ones
   const [searchTerm, setSearchTerm] = useState<string>('');
   const [selectedCategory, setSelectedCategory] = useState<string>('All');
   const [selectedPriority, setSelectedPriority] = useState<string>('All');
@@ -15,24 +16,33 @@ const TaskList: React.FC = () => {
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setSearchTerm(value);
-    setFilter({ search: value });
+    setFilter({ search: value }); // NOTE: actoins here erase other filters when applying new one
     setCurrentPage(1);
   };
 
   const handleCategoryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     setSelectedCategory(value);
-    setFilter({ category: value === 'All' ? undefined : value });
+    setFilter({ category: value === 'All' ? undefined : value }); // NOTE: actoins here erase other filters when applying new one
     setCurrentPage(1);
   };
 
   const handlePriorityChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const value = e.target.value;
     setSelectedPriority(value);
-    setFilter({ priority: value === 'All' ? undefined : value as 'High' | 'Medium' | 'Low' });
+    setFilter({ priority: value === 'All' ? undefined : value as 'High' | 'Medium' | 'Low' }); // NOTE: actoins here erase other filters when applying new one 
     setCurrentPage(1);
   };
 
+  // NOTE: It is better to move to store/model itself as computed domain data using `useSelector` hook https://zustand.docs.pmnd.rs/hooks/use-store
+  /**
+   * ```tsx
+   * const myFilteredTasks = useStore(
+   *  useTodoStore, 
+   *  state => state.tasks.filter(t => t.category === state.filter.category) // Any filtering logic calculated from state itself
+   * );
+   * ```
+   */
   const filteredTasks = useMemo(() => {
     return tasks.filter((task) => {
       if (filter.category && task.category !== filter.category) return false;

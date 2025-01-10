@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { useTodoStore } from '@/store';
 
+// NOTE: Semantically bad name as it is whole form block instead of just input
 const AddTaskInput: React.FC = () => {
   const [taskTitle, setTaskTitle] = useState<string>('');
-  const [taskCategory, setTaskCategory] = useState<string>('General');
-  const [taskPriority, setTaskPriority] = useState<'High' | 'Medium' | 'Low'>('Medium');
+  const [taskCategory, setTaskCategory] = useState<string>('General'); // NOTE: It is better to use enum or derived type e.g `type Category = State['category']` 
+  const [taskPriority, setTaskPriority] = useState<'High' | 'Medium' | 'Low'>('Medium'); 
 
   const { addTask } = useTodoStore();
   const maxLengthTitle: number = 58;

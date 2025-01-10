@@ -21,7 +21,24 @@ const saveTasksToLocalStorage = (tasks: StoreDataTypes.Task[]) => {
 };
 
 const useTodoStore = create<StoreDataTypes.TodoState>((set) => ({
-  tasks: loadTasksFromLocalStorage(),
+  /**
+   * NOTE: Reading from local storage is side effect. It can throw on 
+   * - AccessDenied by user settings. (HANDLED! But without deep deving in implementation details it is unclear)
+   * - Data is set as JSON is wrongly serialized or broken (HANDLED! But without deep deving in implementation details it is unclear)
+   * - It is unsafe to read from global string storage without applyed proper type validation (TS type guards written manually or using libs like `zod`) 
+   * 
+   * Better to use safe fallback on start and load state by user intenttion in component or any other place within async action (router, module and etc)
+   * ```ts
+   * // ...
+   * loadTasks: () => {
+   *  const tasks = [];
+   *  // Logic mentioned above 
+   *  return tasks;
+   * }
+   * // ...
+   * ```
+   */
+  tasks: loadTasksFromLocalStorage(), 
   filter: {},
 
   addTask: (task) =>
